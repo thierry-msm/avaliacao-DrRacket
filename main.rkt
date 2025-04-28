@@ -30,7 +30,8 @@
                #:quit? #f
                #:listen-ip #f
                #:port 8000
-               #:servlet-path "/")
+               #:servlet-path "/"
+               #:servlet-regexp #rx"")
 
 ;; Display a message indicating the server is running
 (printf "DrRacket Usability Evaluation server running at http://localhost:8000/\n")

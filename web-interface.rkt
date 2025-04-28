@@ -1,40 +1,36 @@
 #lang racket
 
-;; Web Interface Module for the DrRacket Usability Evaluation Application
-;; This module handles the web server and request handling
-
 (require web-server/servlet
          web-server/servlet-env
-         web-server/templates
+         web-server/dispatch
          "db-operations.rkt"
          racket/format)
 
 (provide start-servlet)
 
-;; Helper function to extract URL path as string
-(define (url->string url)
-  (let ([path (url-path url)])
-    (if (or (null? path) (equal? path '()))
-        "/" ; Padronizar a rota raiz como "/"
-        (let ([result (string-join (map path/param-path path) "/")])
-          (printf "url->string result: ~a\n" result)
-          result))))
+;; Define as rotas mais explicitamente
+(define-values (dispatch url->request)
+  (dispatch-rules
+   [("") home-page]
+   [("evaluate") evaluation-page]
+   [("submit") #:method "post" submit-evaluation]
+   [("styles.css") send-css]
+   [("app.js") send-js]
+   [else not-found-page]))
 
-;; Main servlet function
+;; Função principal para debug
 (define (start-servlet request)
- (printf "Request URI: ~a\n" (request-uri request))
-  ;;(printf "Request Path: ~a\n" (request-path request)) ; Verifique o caminho diretamente
-  (let ([path (string-trim (url->string (request-uri request)) "/")])
-    ;;(printf "Processed path: ~a\n" path)
-    (cond
-      [(equal? path "/") (home-page request)]
-      [(equal? path "/evaluate") (evaluation-page request)]
-      [(equal? path "/submit") (submit-evaluation request)]
-      [(equal? path "/styles.css") (send-css)]
-      [(equal? path "/app.js") (send-js)]
-      [else (not-found-page)])))
+  (printf "Request URI: ~a\n" (request-uri request))
+  (printf "Request method: ~a\n" (request-method request))
+  (printf "URL path: ~a\n" (map path/param-path (url-path (request-uri request))))
+  
+  ;; Tente o dispatch, se falhar, mostre o erro e retorne a página 404
+  (with-handlers ([exn:fail? (lambda (e)
+                              (printf "Dispatch error: ~a\n" (exn-message e))
+                              (not-found-page))])
+    (dispatch request)))
 
-;; Home page with visualization of evaluation data
+;; Home page com visualização de dados de avaliação
 (define (home-page request)
   (let ([stats (get-evaluation-stats)])
     (response/xexpr
@@ -262,8 +258,8 @@
   (redirect-to "/"))
 
 ;; Send CSS stylesheet
-(define (send-css)
-    (printf "Serving CSS file.\n")
+(define (send-css request)
+  (printf "Serving CSS file.\n")
   (response/full
    200 #"OK"
    (current-seconds)
@@ -383,8 +379,8 @@
     }")))
 
 ;; Send JavaScript code
-(define (send-js)
-    (printf "Serving JS file.\n")
+(define (send-js request)
+  (printf "Serving JS file.\n")
   (response/full
    200 #"OK"
    (current-seconds)
@@ -449,7 +445,7 @@
     });")))
 
 ;; 404 Page
-(define (not-found-page)
+(define (not-found-page request)
   (response/xexpr
    #:code 404
    `(html
