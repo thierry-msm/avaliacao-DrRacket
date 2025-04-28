@@ -115,6 +115,7 @@
                   (a ((href "/evaluate") (class "button")) "Avaliar DrRacket")))))))
 
 ;; Evaluation page with the questionnaire
+;; Evaluation page with the questionnaire
 (define (evaluation-page request)
   (response/xexpr
    `(html
@@ -135,7 +136,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'visibility')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'visibility')")))))))
                       (input ((type "hidden") (name "visibility") (id "visibility-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -144,7 +145,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'compatibility')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'compatibility')")))))))
                       (input ((type "hidden") (name "compatibility") (id "compatibility-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -153,7 +154,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'control')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'control')")))))))
                       (input ((type "hidden") (name "control") (id "control-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -162,7 +163,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'consistency')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'consistency')")))))))
                       (input ((type "hidden") (name "consistency") (id "consistency-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -171,7 +172,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'error_prevention')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'error_prevention')")))))))
                       (input ((type "hidden") (name "error_prevention") (id "error_prevention-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -180,7 +181,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'recognition')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'recognition')")))))))
                       (input ((type "hidden") (name "recognition") (id "recognition-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -189,7 +190,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'flexibility')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'flexibility')")))))))
                       (input ((type "hidden") (name "flexibility") (id "flexibility-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -198,7 +199,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'aesthetics')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'aesthetics')")))))))
                       (input ((type "hidden") (name "aesthetics") (id "aesthetics-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -207,7 +208,7 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'error_recovery')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'error_recovery')")))))))
                       (input ((type "hidden") (name "error_recovery") (id "error_recovery-value") (value "0"))))
                  
                  (div ((class "evaluation-section"))
@@ -216,12 +217,13 @@
                       (div ((class "rating-container")) 
                            (div ((class "rating")) 
                                 ,@(for/list ([i (in-range 1 11)])
-                                    `(span ((class "dot") (data-value ,i) (onclick ,(format "selectRating(this, 'help_docs')")))))))
+                                    `(span ((class "dot") (data-value ,(number->string i)) (onclick ,(format "selectRating(this, 'help_docs')")))))))
                       (input ((type "hidden") (name "help_docs") (id "help_docs-value") (value "0"))))
                  
                  (div ((class "form-actions"))
                       (button ((type "submit") (class "button")) "Submit Evaluation"))))))))
 
+;; Process submitted evaluation
 ;; Process submitted evaluation
 (define (submit-evaluation request)
   (define bindings
@@ -230,26 +232,24 @@
   (define evaluation-data
     (make-hash))
   
-  (hash-set! evaluation-data 'visibility 
-             (string->number (extract-binding/single 'visibility bindings)))
-  (hash-set! evaluation-data 'compatibility 
-             (string->number (extract-binding/single 'compatibility bindings)))
-  (hash-set! evaluation-data 'control 
-             (string->number (extract-binding/single 'control bindings)))
-  (hash-set! evaluation-data 'consistency 
-             (string->number (extract-binding/single 'consistency bindings)))
-  (hash-set! evaluation-data 'error_prevention 
-             (string->number (extract-binding/single 'error_prevention bindings)))
-  (hash-set! evaluation-data 'recognition 
-             (string->number (extract-binding/single 'recognition bindings)))
-  (hash-set! evaluation-data 'flexibility 
-             (string->number (extract-binding/single 'flexibility bindings)))
-  (hash-set! evaluation-data 'aesthetics 
-             (string->number (extract-binding/single 'aesthetics bindings)))
-  (hash-set! evaluation-data 'error_recovery 
-             (string->number (extract-binding/single 'error_recovery bindings)))
-  (hash-set! evaluation-data 'help_docs 
-             (string->number (extract-binding/single 'help_docs bindings)))
+  ;; Função auxiliar para extrair valor do binding e convertê-lo para número
+  (define (extract-value field-name)
+    (define field-bytes (string->bytes/utf-8 (symbol->string field-name)))
+    (define binding (bindings-assq field-bytes bindings))
+    (if binding
+        (string->number (bytes->string/utf-8 (binding:form-value binding)))
+        0)) ; Valor padrão se não encontrar o campo
+  
+  (hash-set! evaluation-data 'visibility (extract-value 'visibility))
+  (hash-set! evaluation-data 'compatibility (extract-value 'compatibility))
+  (hash-set! evaluation-data 'control (extract-value 'control))
+  (hash-set! evaluation-data 'consistency (extract-value 'consistency))
+  (hash-set! evaluation-data 'error_prevention (extract-value 'error_prevention))
+  (hash-set! evaluation-data 'recognition (extract-value 'recognition))
+  (hash-set! evaluation-data 'flexibility (extract-value 'flexibility))
+  (hash-set! evaluation-data 'aesthetics (extract-value 'aesthetics))
+  (hash-set! evaluation-data 'error_recovery (extract-value 'error_recovery))
+  (hash-set! evaluation-data 'help_docs (extract-value 'help_docs))
   
   ;; Save to database
   (save-evaluation evaluation-data)
