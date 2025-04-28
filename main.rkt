@@ -26,7 +26,7 @@
 
 ;; Start the web server
 (serve/servlet start-servlet
-               #:launch-browser? #t
+               #:launch-browser? #f
                #:quit? #f
                #:listen-ip #f
                #:port 8000

@@ -11,9 +11,21 @@
 
 (provide start-servlet)
 
+;; Helper function to extract URL path as string
+(define (url->string url)
+  (let ([path (url-path url)])
+    (if (or (null? path) (equal? path '()))
+        "/" ; Padronizar a rota raiz como "/"
+        (let ([result (string-join (map path/param-path path) "/")])
+          (printf "url->string result: ~a\n" result)
+          result))))
+
 ;; Main servlet function
 (define (start-servlet request)
-  (let ([path (url->string (request-uri request))])
+ (printf "Request URI: ~a\n" (request-uri request))
+  ;;(printf "Request Path: ~a\n" (request-path request)) ; Verifique o caminho diretamente
+  (let ([path (string-trim (url->string (request-uri request)) "/")])
+    ;;(printf "Processed path: ~a\n" path)
     (cond
       [(equal? path "/") (home-page request)]
       [(equal? path "/evaluate") (evaluation-page request)]
@@ -21,10 +33,6 @@
       [(equal? path "/styles.css") (send-css)]
       [(equal? path "/app.js") (send-js)]
       [else (not-found-page)])))
-
-;; Helper function to extract URL path as string
-(define (url->string url)
-  (string-join (map path/param-path (url-path url)) "/"))
 
 ;; Home page with visualization of evaluation data
 (define (home-page request)
@@ -255,6 +263,7 @@
 
 ;; Send CSS stylesheet
 (define (send-css)
+    (printf "Serving CSS file.\n")
   (response/full
    200 #"OK"
    (current-seconds)
@@ -375,6 +384,7 @@
 
 ;; Send JavaScript code
 (define (send-js)
+    (printf "Serving JS file.\n")
   (response/full
    200 #"OK"
    (current-seconds)

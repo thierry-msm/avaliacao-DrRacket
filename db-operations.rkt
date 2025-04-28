@@ -24,6 +24,7 @@
   ;; Caminho completo para o arquivo do banco (formato robusto)
   (define db-path (build-path db-dir "usability-evaluation.db"))
   (displayln (format "Criando banco de dados em: ~a" db-path))
+  (printf "Database path: ~a\n" db-path)
 
   ;; Conecta ao SQLite
   (set! db-conn (sqlite3-connect #:database (path->string db-path)))
