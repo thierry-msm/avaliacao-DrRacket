@@ -36,14 +36,14 @@
     (response/xexpr
      `(html
        (head
-        (title "DrRacket Usability Evaluation")
+        (title "Avaliação de usabilidade DrRacket")
         (link ((rel "stylesheet") (href "/styles.css")))
         (script ((src "/app.js")))
         (script ((src "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"))))
        (body
         (div ((class "container"))
-             (h1 "DrRacket Usability Evaluation")
-             (p "Welcome to the DrRacket Usability Evaluation tool. This application allows users to assess the DrRacket software based on Nielsen's 10 usability heuristics.")
+             (h1 "Avaliação de usabilidade DrRacket")
+             (p "Bem-vindo à ferramenta de Avaliação de Usabilidade DrRacket. Este aplicativo permite que os usuários avaliem o software DrRacket com base nas 10 heurísticas de usabilidade de Jacob Nielsen.")
              
              (div ((class "stats-container"))
                   (h2 "Current Evaluation Statistics")
@@ -58,9 +58,9 @@
                                 const chart = new Chart(ctx, {
                                     type: 'bar',
                                     data: {
-                                        labels: ['Visibility', 'Compatibility', 'Control', 'Consistency', 
-                                                'Error Prevention', 'Recognition', 'Flexibility', 'Aesthetics', 
-                                                'Error Recovery', 'Help & Documentation'],
+                                        labels: ['Visibilidade', 'Compatibilidade', 'Controle', 'Consistência', 
+                                                'Prevenção de Erros', 'Reconhecimento', 'Flexibilidade', 'Estética', 
+                                                'Recuperação de Erros', 'Ajuda e Documentação'],
                                         datasets: [{
                                             label: 'Average Rating',
                                             data: [" (string-join (map number->string (hash-ref stats 'averages)) ", ") "],
@@ -105,8 +105,8 @@
                             });"))))
                   
                   (div ((class "stats-summary"))
-                       (p ,(format "Total evaluations: ~a" (hash-ref stats 'count)))
-                       (p ,(format "Average overall rating: ~a/10" 
+                       (p ,(format "Total de avaliações: ~a" (hash-ref stats 'count)))
+                       (p ,(format "Média geral: ~a/10" 
                                   (let ([avg (/ (apply + (hash-ref stats 'averages)) 
                                                (length (hash-ref stats 'averages)))])
                                     (number->string (/ (round (* avg 10)) 10)))))))
@@ -120,13 +120,13 @@
   (response/xexpr
    `(html
      (head
-      (title "Evaluate DrRacket - Usability Evaluation")
+      (title "Avaliação DrRacket - Questionário")
       (link ((rel "stylesheet") (href "/styles.css")))
       (script ((src "/app.js"))))
      (body
       (div ((class "container"))
-           (h1 "Evaluate DrRacket")
-           (p "Please rate DrRacket based on Nielsen's 10 usability heuristics. Click on the dots to select your rating (1-10).")
+           (h1 "Avaliação DrRacket")
+           (p "Avalie o DrRacket com base nas 10 heurísticas de usabilidade da Nielsen. Clique nos pontos para selecionar sua avaliação (1 a 10).")
            
            (form ((action "/submit") (method "post") (id "evaluation-form"))
                  
@@ -221,7 +221,7 @@
                       (input ((type "hidden") (name "help_docs") (id "help_docs-value") (value "0"))))
                  
                  (div ((class "form-actions"))
-                      (button ((type "submit") (class "button")) "Submit Evaluation"))))))))
+                      (button ((type "submit") (class "button")) "Enviar"))))))))
 
 ;; Process submitted evaluation
 ;; Process submitted evaluation
