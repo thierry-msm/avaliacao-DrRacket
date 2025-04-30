@@ -1,5 +1,4 @@
-# DrRacket Usability Evaluation Application
-
+# Aplicação de avaliação DrRacket
 ## Descrição
 Esta é uma aplicação web desenvolvida em Racket para avaliar a usabilidade do software DrRacket com base nas 10 heurísticas de usabilidade de Jakob Nielsen. Ela permite que os usuários preencham um questionário de avaliação e visualizem estatísticas agregadas das avaliações enviadas.
 
