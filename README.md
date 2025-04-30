@@ -24,7 +24,7 @@ Esta é uma aplicação web desenvolvida em Racket para avaliar a usabilidade do
 
 ## Como Executar
 1. Clone este repositório ou baixe os arquivos.
-2. Certifique-se de que o Racket está instalado.
+2. Certifique-se de que o Racket está instalado e funcionando.
 3. Navegue até o diretório do projeto no terminal.
 4. Execute o seguinte comando:
    ```bash
@@ -51,12 +51,3 @@ Esta é uma aplicação web desenvolvida em Racket para avaliar a usabilidade do
 - Linguagem: Racket
 - Banco de Dados: SQLite
 - Frontend: HTML, CSS, JavaScript (incluindo Chart.js para gráficos)
-
-## Problemas Conhecidos
-- A rota raiz (`/`) pode ser interpretada como uma string vazia (`""`) em algumas configurações. Certifique-se de que as rotas estão configuradas corretamente no arquivo `web-interface.rkt`.
-
-## Contribuição
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
-
-## Licença
-Este projeto está licenciado sob a licença MIT.
